@@ -1,0 +1,230 @@
+@(village: Option[Form[Village]], exists: Boolean, isDanron: Boolean, no: Int)
+
+@main("Add", 2) {
+<h2>追加・編集・削除</h2>
+<div class="panel panel-default">
+  <div class="panel-body">
+	@helper.form(action = routes.Edit.addMain, 'class -> "form-horizontal") {
+		<div class="form-group form-group-sm">
+				<label for="inputcapacity" class="col-sm-3 control-label">村番号</label>
+				<div class="col-sm-3">
+					<input @if(village.isEmpty || village.get!=null){value="@no"} type="number" id="inputcapacity" class="form-control" name="number" min="1" required>
+				</div>
+				<div class="col-sm-3">
+ 					<button type="submit" class="btn btn-primary btn-block">データ取得</button>
+				</div>
+		</div>
+	}
+		</div>
+</div>
+
+@if(village.isEmpty || village.get!=null){
+	@helper.form(action = routes.Edit.adl, 'class -> "form-horizontal") {
+<div class="panel panel-default">
+  <div class="panel-body">
+		<h3>村情報</h3>
+    @if(village isEmpty){
+    	<div class="alert alert-danger" role="alert"><b>ログが見当たらないか、読み込めませんでした</b><br>ログとして外部ファイルへのリンクを貼る場合は、コメント欄末尾に"#url=http://～"の形で追記してください</div>
+    }else{
+	  	@if(exists){
+	  		<div class="alert alert-success" role="alert"><b>登録済みです</b><br>編集すると、編集前の情報は失われます</div>
+	  	}else{
+	  		@if(isDanron){
+					<div class="alert alert-success" role="alert"><b>ログが見つかりました</b><br>情報を確認して追加登録してください</div>
+				}else{
+					<div class="alert alert-warning" role="alert"><b>ダンガンロンパのログではないかも？</b><br>情報を確認して追加登録してください</div>
+				}
+			}
+		}
+@if(village.isDefined){
+		<div class="form-group form-group-sm">
+				<label class="col-sm-3 control-label">村番号</label>
+				<div class="col-sm-3">@no</div>
+				<input value="@no" type="hidden" id="inputcapacity" class="form-control" name="number">
+		</div>
+		<div class="form-group form-group-sm">
+			<label for="inputname" class="col-sm-3 control-label">村名</label>
+			<div class="col-sm-7">
+				<input type="text" id="inputname" class="form-control" value="@village.get("name").value.getOrElse("")" name="name" required>
+			</div>
+		</div>
+		<div class="form-group form-group-sm">
+			<label for="inputcapacity" class="col-sm-3 control-label">配役</label>
+			<div class="col-sm-2">
+				<input type="number" id="inputcapacity" class="form-control" value="@village.get("capacity").value.getOrElse("")" min="4" max="30" name="capacity" required>
+			</div>
+			<div class="col-sm-2">
+				<select class="form-control" id="selectcast" name="cast" required>
+					<option@if(village.get("cast").value.getOrElse("")=="A"){ selected}>A</option>
+					<option@if(village.get("cast").value.getOrElse("")=="B"){ selected}>B</option>
+					<option@if(village.get("cast").value.getOrElse("")=="C"){ selected}>C</option>
+					<option@if(village.get("cast").value.getOrElse("")=="D"){ selected}>D</option>
+					<option@if(village.get("cast").value.getOrElse("")=="Z"){ selected}>Z</option>
+				</select>
+			</div>
+			<div class="col-sm-4 btn-group" data-toggle="buttons">
+  			<label class="btn btn-select btn-sm @if(village.get("rc").value.getOrElse("false") == "true"){active}">
+					<input type="checkbox" id="checkboxcat" value="true" name="rc" @if(village.get("rc").value.getOrElse("false") == "true"){checked}> 猫
+				</label>
+				<label class="btn btn-select btn-sm @if(village.get("rs").value.getOrElse("false") == "true"){active}">
+					<input type="checkbox" id="checkboxsp" value="true" name="rs" @if(village.get("rs").value.getOrElse("false") == "true"){checked}> 強化
+				</label>
+				<label class="btn btn-select btn-sm @if(village.get("rl").value.getOrElse("false") == "true"){active}">
+					<input type="checkbox" id="checkboxlunatic" value="true" name="rl" @if(village.get("rl").value.getOrElse("false") == "true"){checked}> 聴狂
+				</label>
+			</div>
+		</div>
+		<div class="form-group form-group-sm">
+			<label for="inputcomment" class="col-sm-3 control-label">勝利陣営</label>
+			<div class="col-sm-3">
+			<select class="form-control" id="selectwin" name="winner" required>
+				<option@if(village.get("winner").value.getOrElse("")=="村人"){ selected}>村人</option>
+				<option@if(village.get("winner").value.getOrElse("")=="人狼"){ selected}>人狼</option>
+				<option@if(village.get("winner").value.getOrElse("")=="妖狐"){ selected}>妖狐</option>
+				<option@if(village.get("winner").value.getOrElse("")=="引分"){ selected}>引分</option>
+				<option@if(village.get("winner").value.getOrElse("")=="廃村"){ selected}>廃村</option>
+				<option@if(village.get("winner").value.getOrElse("")=="開始前廃村"){ selected}>開始前廃村</option>
+			</select>
+			</div>
+		</div>
+		<div class="form-group form-group-sm">
+			<label for="inputcapacity" class="col-sm-3 control-label">特殊ルール</label>
+			<div class="col-sm-4">
+				<select class="form-control" id="selectsp" name="special">
+					<option value="">（特殊ルールなし）</option>
+					@for(sp <- Special.specialVillage.values if sp!=""){
+					<option @if(village.get("special").value.getOrElse("")==sp){ selected}>@sp</option>
+					}
+					<option @if(!Special.specialVillage.values.exists(s => s==village.get("special").value.getOrElse(""))){ selected}>その他</option>
+				</select>
+			</div>
+			<div class="col-sm-3">
+				<input type="text" value="@if(!Special.specialVillage.values.exists(s => s==village.get("special").value.getOrElse(""))){@village.get("special").value.getOrElse("")}" id="inputspecial" class="form-control" name="special2">
+			</div>
+		</div>
+		<div class="form-group form-group-sm">
+			<label for="inputtime" class="col-sm-3 control-label">終了日時</label>
+			<div class="col-sm-7">
+				<input value="@village.get("endTime").value.get" type="datetime" class="form-control" name="endTime">
+			</div>
+		</div>
+		<div class="form-group form-group-sm">
+			<label for="inputcomment" class="col-sm-3 control-label">コメント</label>
+			<div class="col-sm-7">
+				<input type="text" value="@village.get("comment").value.getOrElse("")" id="inputcomment" class="form-control" name="comment">
+			</div>
+		</div>
+		<div class="form-group form-group-sm">
+			@if(exists){
+			<div class="col-sm-offset-3 col-sm-4">
+	 		<button type="submit" class="btn btn-primary btn-block btn-primary" name="mode" value="edit">編集</button>
+			</div>
+			<div class="col-sm-2">
+  				<a data-toggle="collapse" data-parent="#accordion" href="#collapseS">	削除	</a>
+			</div>
+			} else {
+			<div class="col-sm-offset-3 col-sm-6">
+	 		<button type="submit" class="btn btn-primary btn-block" name="mode" value="add">追加</button>
+			</div>
+			}
+		</div>
+  </div>
+	<div id="collapseS" class="panel-collapse collapse">
+		<div class="form-group form-group-sm">
+			<div class="col-sm-offset-3 col-sm-4 alert alert-danger" role="alert">村データを削除します</div>
+ 		</div>
+		<div class="form-group form-group-sm">
+			<div class="col-sm-offset-3 col-sm-2">
+				<button type="submit" class="btn btn-danger btn-block btn-sm" name="mode" value="delete">削除</button>
+			</div>
+ 		</div>
+  </div>
+	} else {
+		<div class="form-group form-group-sm">
+				<label class="col-sm-3 control-label">村番号</label>
+				<div class="col-sm-3">@no</div>
+				<input value="@no" type="hidden" id="inputcapacity" class="form-control" name="number">
+		</div>
+		<div class="form-group form-group-sm">
+			<label for="inputname" class="col-sm-3 control-label">村名</label>
+			<div class="col-sm-7">
+				<input type="text" id="inputname" class="form-control" name="name" required>
+			</div>
+		</div>
+		<div class="form-group form-group-sm">
+			<label for="inputcapacity" class="col-sm-3 control-label">配役</label>
+			<div class="col-sm-2">
+				<input type="number" id="inputcapacity" class="form-control" min="4" max="30" name="capacity" required>
+			</div>
+			<div class="col-sm-2">
+				<select class="form-control" id="selectcast" name="cast" required>
+					<option>A</option>
+					<option>B</option>
+					<option>C</option>
+					<option>D</option>
+					<option>Z</option>
+				</select>
+			</div>
+			<div class="col-sm-4 btn-group" data-toggle="buttons">
+  			<label class="btn btn-select btn-sm">
+					<input type="checkbox" id="checkboxcat" value="true" name="rc"> 猫
+				</label>
+				<label class="btn btn-select btn-sm">
+					<input type="checkbox" id="checkboxsp" value="true" name="rs"> 強化
+				</label>
+				<label class="btn btn-select btn-sm">
+					<input type="checkbox" id="checkboxlunatic" value="true" name="rl"> 聴狂
+				</label>
+			</div>
+		</div>
+		<div class="form-group form-group-sm">
+			<label for="inputcomment" class="col-sm-3 control-label">勝利陣営</label>
+			<div class="col-sm-3">
+			<select class="form-control" id="selectwin" name="winner" required>
+				<option>村人</option>
+				<option>人狼</option>
+				<option>妖狐</option>
+				<option>引分</option>
+				<option>廃村</option>
+				<option>開始前廃村</option>
+			</select>
+			</div>
+		</div>
+		<div class="form-group form-group-sm">
+			<label for="inputspecial" class="col-sm-3 control-label">特殊ルール</label>
+			<div class="col-sm-4">
+				<select class="form-control" id="selectsp" name="special">
+					<option value="">（特殊ルールなし）</option>
+					@for(sp <- Special.specialVillage.values if sp!=""){
+					<option>@sp</option>
+					}
+					<option>その他</option>
+				</select>
+			</div>
+			<div class="col-sm-3">
+				<input type="text" id="inputspecial" class="form-control" name="special2">
+			</div>
+		</div>
+		<div class="form-group form-group-sm">
+			<label for="inputtime" class="col-sm-3 control-label">終了日時</label>
+			<div class="col-sm-7">
+				<input value="1900/01/01 00:00" type="datetime" class="form-control" name="endTime">
+			</div>
+		</div>
+		<div class="form-group form-group-sm">
+			<label for="inputcapacity" class="col-sm-3 control-label">コメント</label>
+			<div class="col-sm-7">
+				<input type="text" id="inputcomment" class="form-control" name="comment">
+			</div>
+		</div>
+		<div class="form-group form-group-sm">
+			<div class="col-sm-offset-3 col-sm-6">
+	 		<button type="submit" class="btn btn-primary btn-block" name="mode" value="add">追加</button>
+			</div>
+		</div>
+	</div>
+		}
+	</div>
+		}
+	}
+}

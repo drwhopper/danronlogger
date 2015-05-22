@@ -1,0 +1,43 @@
+@(village: Seq[Village], maxPage: Int, total:Int,  form: Form[VillageQuery], url :String, page :Int)
+
+@main("Search", 1) {
+		<p></p>
+		@searchbox(form, total)
+			<table class="table table-striped">
+      	<thead>
+        	<tr>
+        	  <th>村番号</th>
+        	  <th>配役</th>
+        	  <th>コメント</th>
+        	  <th>終了日時</th>
+        	</tr>
+      	</thead>
+      	<tbody>
+      	  @for(v <- village) {@villageTable(v)}
+      	</tbody>
+  		</table>
+	<div class="text-center">
+		<ul class="pagination">
+		  <li><a@if(page!=1){ href="@{url}page=1"}>&laquo;</a></li>
+			@for(i <- -6 to 6){
+				@if(page + i>0 && page + i <= maxPage){
+		  		<li@if(i==0){ class="active"}><a@if(i!=0){ href="@{url}page=@{page+i}"}>@{page + i}</a></li>
+		  	}
+		  }
+		  <li><a@if(page!=maxPage){ href="@{url}page=@maxPage"}>&raquo;</a></li>
+		</ul>
+   </div>
+}
+
+@villageTable(v: Village) = {
+      	  <tr>
+         	 <td><a href="@models.RuruUtil.toURLconsideringComment(v.no,v.comment)" target="_blank">@v.no</a>
+						<small><small><a href="@models.RuruUtil.toWatcherURL(v.no,v.comment)" target="_blank">無</a></small></small></td>
+        	  <td>@v.capacity@v.cast@if(v rule_cat){猫}@if(v rule_sp){強化}@if(v rule_lunatic){聴狂}
+        	  @if(v.special=="初心者"){<span class="label label-beginner">@v.special</span>
+        	    } else {@if(v.special!=""){<span class="label label-sp">@v.special</span>}}
+        	  @if(v.winner.contains("廃村")){<span class="label label-deserted">@v.winner</span>}</td>
+        	  <td><small>@models.RuruUtil.commentWihoutURL(v.comment)</small></td>
+        	  <td>@v.endTime.toString.substring(0,10) <small>@v.endTime.toString.substring(11,16)</small></td>
+      	  </tr>
+}

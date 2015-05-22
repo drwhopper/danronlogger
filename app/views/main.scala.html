@@ -1,0 +1,26 @@
+@(title: String, active: Int)(content: Html)
+<!DOCTYPE html>
+
+<html lang="ja">
+    <head>
+        <title>@title - Ruru-Logger for Danganronpa</title>
+        <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.ico")">
+        <link rel='stylesheet' href='@routes.Assets.at("stylesheets/main.css")'>
+        <script type='text/javascript' src='@routes.WebJarAssets.at(WebJarAssets.locate("jquery.js"))'></script>
+    </head>
+    <body>
+    <div id="wrap">
+		<div class="container">
+			@navi(active)
+			<div class="row">
+				<div class="container">
+					<div class="col-sm-3 col-md-2">@side()</div>
+     				<div class="col-sm-9 col-md-10">@content</div>
+   				</div>
+			</div>
+ 	   </div>
+ 	</div>
+    
+    <script type='text/javascript' src='@routes.WebJarAssets.at(WebJarAssets.locate("bootstrap.js"))'></script>
+    </body>
+</html>

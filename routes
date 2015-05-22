@@ -1,0 +1,29 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET     /                           controllers.Search.defaultAll
+
+GET     /about                      controllers.Morning.about
+
+GET     /add                        controllers.Edit.add
+POST    /add                        controllers.Edit.addMain
+
+POST    /adl                        controllers.Edit.adl
+
+GET     /search                     controllers.Search.index
+
+GET     /qs/12B                     controllers.Search.default12b
+GET     /qs/17A                     controllers.Search.default17a
+GET     /qs/18A                     controllers.Search.default18a
+GET     /qs/19D                     controllers.Search.default19d
+GET     /qs/many                    controllers.Search.defaultMany
+GET     /qs/beginner                controllers.Search.defaultBeginner
+GET     /qs/special                 controllers.Search.defaultSpecial
+GET     /qs/deserted                controllers.Search.defaultDeserted
+GET     /qs/all 	                controllers.Search.defaultAll
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file               controllers.Assets.at(path="/public", file)
+GET     /webjars/*file              controllers.WebJarAssets.at(file)

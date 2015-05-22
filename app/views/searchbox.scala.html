@@ -1,0 +1,120 @@
+@import models.Special
+
+@(form: Form[VillageQuery], total: Int) 
+
+	<div class="panel-group" id="accordion">
+		<div class="panel panel-default">
+  	<!-- Default panel contents -->
+  		<div class="panel-heading">
+				<h3 class="panel-title">
+  					検索条件：
+						@if(form("capacityFrom").value.isDefined){
+						@form("capacityFrom").value@if(form("capacityTo").value.isDefined){～@form("capacityTo").value}人}
+						@if(form("cast").value.isDefined){@{form("cast").value}配役}
+						@if(form("rc").value.getOrElse("false")=="true"){猫}
+						@if(form("rl").value.getOrElse("false")=="true"){聴狂}
+						@if(form("rs").value.getOrElse("false")=="true"){強化}<br>
+						@{if(form("winner").value.getOrElse("").contains("廃村")){form("winner").value}
+						else if(form("winner").value.getOrElse("").contains("引分")){form("winner").value.get}
+						else if(form("winner").value.isDefined){form("winner").value.get +"陣営勝利"}}
+						@if(form("special").value.getOrElse("false")!="false"){@form("special").value}
+						<small>　@total 件ヒット</small>
+ 				</h3>
+				<p>
+  				<a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+  					検索してみる
+					</a>
+ 				</p>
+ 			</div>
+  		<div id="collapseOne" class="panel-collapse collapse">
+  			<div class="panel-body">
+					@helper.form(action = routes.Search.index, 'class -> "form-horizontal") {
+						<div class="form-group form-group-sm">
+							<label for="inputcapacity" class="col-sm-3 control-label">配役</label>
+							<div class="col-sm-3">
+								<input type="number" id="inputcapacity" class="form-control" value="@form("capacityFrom").value.getOrElse("")" min="4" max="30" name="capacityFrom">
+							</div>
+							<div class="col-sm-2">
+								<select class="form-control" id="selectcast" name="cast">
+									<option></option>
+									<option@if(form("cast").value.getOrElse("")=="A"){ selected}>A</option>
+									<option@if(form("cast").value.getOrElse("")=="B"){ selected}>B</option>
+									<option@if(form("cast").value.getOrElse("")=="C"){ selected}>C</option>
+									<option@if(form("cast").value.getOrElse("")=="D"){ selected}>D</option>
+									<option@if(form("cast").value.getOrElse("")=="Z"){ selected}>Z</option>
+								</select>
+							</div>
+							<div class="col-sm-4 btn-group" data-toggle="buttons">
+  							<label class="btn btn-primary btn-select btn-sm @if(form("rc").value.getOrElse("false") == "true"){active}">
+									<input type="checkbox" id="checkboxcat" value="true" name="rc" @if(form("rc").value.getOrElse("false") == "true"){checked}> 猫
+								</label>
+								<label class="btn btn-primary btn-select btn-sm @if(form("rs").value.getOrElse("false") == "true"){active}">
+									<input type="checkbox" id="checkboxsp" value="true" name="rs" @if(form("rs").value.getOrElse("false") == "true"){checked}> 強化
+								</label>
+								<label class="btn btn-primary btn-select btn-sm @if(form("rl").value.getOrElse("false") == "true"){active}">
+									<input type="checkbox" id="checkboxlunatic" value="true" name="rl" @if(form("rl").value.getOrElse("false") == "true"){checked}> 聴狂
+								</label>
+							</div>
+						</div>
+						<div class="form-group form-group-sm">
+							<label for="inputcapacity" class="col-sm-3 control-label">勝利陣営</label>
+							<div class="col-sm-6">
+							<select class="form-control" id="selectwin" name="winner">
+								<option value="">（指定なし）</option>
+								<option@if(form("winner").value.getOrElse("")=="村人"){ selected}>村人</option>
+								<option@if(form("winner").value.getOrElse("")=="人狼"){ selected}>人狼</option>
+								<option@if(form("winner").value.getOrElse("")=="妖狐"){ selected}>妖狐</option>
+								<option@if(form("winner").value.getOrElse("")=="引分"){ selected}>引分</option>
+								<option@if(form("winner").value.getOrElse("")=="廃村"){ selected}>廃村</option>
+							</select>
+							</div>
+						</div>
+						<div class="form-group form-group-sm">
+							<label for="inputcapacity" class="col-sm-3 control-label">特殊ルール</label>
+							<div class="col-sm-6">
+							<select class="form-control" id="selectsp" name="special">
+								<option value="false">（特殊ルールなし）</option>
+								<option @if(form("special").value.getOrElse("")=="（特殊全て）"){ selected}>（特殊全て）</option>
+								@for(sp <- Special.specialVillage.values if sp!=""){
+								<option @if(form("special").value.getOrElse("")==sp){ selected}>@sp</option>
+								}
+							</select>
+							</div>
+						</div>
+						<div class="form-group form-group-sm">
+							<label for="inputmonth" class="col-sm-3 control-label">期間指定</label>
+							<div class="col-sm-2">
+						 	<select class="form-control" id="selectmonth" name="y">
+                  <option @if(form("y").value.getOrElse("") == ""){ selected}></option>
+								@for(year <- 2012 to 2015){
+								  <option @if(form("y").value.getOrElse("")== year.toString){ selected}>@year</option>
+								}
+							</select>
+							</div>
+							<div class="col-sm-2">
+						 	<select class="form-control" id="selectmonth" name="m">
+                  <option @if(form("m").value.getOrElse("") == ""){ selected}></option>
+	  						@for(month <- 1 to 12){
+								  <option @if(form("m").value.getOrElse("")== month.toString){ selected}>@month</option>
+							  }
+							</select>
+							</div>
+							<div class="col-sm-4 btn-group" data-toggle="buttons">
+								<label class="btn btn-primary btn-select btn-sm @if(form("on").value.getOrElse("true") == "true"){active}">
+									<input type="radio" id="ordernew" value="true" name="on" @if(form("on").value.getOrElse("true") == "true"){checked}> 新しい村から
+								</label>
+  							<label class="btn btn-primary btn-select btn-sm @if(form("on").value.getOrElse("true") == "false"){active}">
+									<input type="radio" id="orderold" value="false" name="on" @if(form("on").value.getOrElse("true") == "false"){checked}> 古い村から
+								</label>
+							</div>
+						</div>
+						<div class="form-group form-group-sm">
+							<div class="col-sm-offset-3 col-sm-6">
+ 								<button type="submit" class="btn btn-primary btn-block">検索</button>
+							</div>
+						</div>
+					}
+  			</div>
+			</div>
+	  </div>
+	</div>

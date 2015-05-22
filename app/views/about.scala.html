@@ -1,0 +1,88 @@
+@()
+
+@main("About",3) {
+	<h2>About</h2>
+	
+	<h3 class="doc">What is this?</h3>
+	<p>「汝は人狼なりや？」るる鯖 で行われている「ダンガンロンパ人狼」の村立てを自動記録し、検索できるようにするアプリです。</p>
+  <p>るる鯖で配信されている村立て情報からダンガンロンパRP村を検知し、村が終了するとログを解析して検索可能な状態にします。</p>
+  <p>およそ作りたいものはできたのですが、ご意見などあれば遠慮なくどうぞ（ただし実装できるかは気分と時間次第ですが）。</p>
+  <p>愚作ではございますがソースコードも公開しております。したのほう、ご覧ください。</p>
+
+  
+  <h3 class="doc"><a id="log"></a>ログ編集にあたってのお願い</h3>
+  <p>ルールとマナーを守って楽しくエディットしよう！</p>
+  <p>自動取得機能は現在も改良中ですが、ログがとれなかったり、特殊村などは判定を誤っていたりする場合があります。
+     編集は誰でも可能ですので、もしお気づきの際はご協力いただけると幸いです。</p>
+     
+  <h3 class="doc">ログ取得基準</h3>
+  <p>村名に「ダン」「ロン」両方を含んでおり、かつ「ミリしら」「知ら」のいずれかが入っていないこと</p>
+  <p>例：  </p>
+  <ul>
+   <li>○ 「ダンガンロンパRP練習」村</li>
+   <li>○ 「ダンロンRP30C強化」村</li>
+   <li>× 「ダンガンロンパミリ知ら」村</li>
+   <li>× 「ロンパRP21B」村</li>
+  </ul>
+
+  
+  <h4 class="doc">取得できない村</h4>
+  <p>「○○SS村」や「田中生誕祭」など、ダンロンって村名にはいってない村は取得しません。手動で追加はできます。</p>
+  <p>例：  </p>
+  <ul>
+   <li>○ 「【ダンロン】石丸誕生日」村</li>
+   <li>× 「ちーたん誕生日おめでとう！」村</li>
+   <li>× 「氷の覇王SS」村</li>
+  </ul>
+
+  
+  <h4 class="doc">初心者村</h4>
+  <p>村名に「初心者」が入っており、かつ「歓迎」が入っていないこと</p>
+  <p>例：  </p>
+  <ul>
+   <li>「ダンガンロンパ初心者」村 → 初心者村</li>
+   <li>「ダンガンロンパ１８猫超初心者」村 → 初心者村</li>
+   <li>「ダンガンロンパ初心者歓迎」村 → ふつうの村</li>
+  </ul>
+  
+  <h4 class="doc">特殊村</h4>
+  <p>村名に沿って、以下の基準を上から順に見てタグ付しています。1つの村には1つの特殊村表示しかできません。登録されていない特殊村表記も利用できます。
+   その場合は、同じ種類の村は同じ表記にすることを推奨します（流行ったら検索項目に追加するかもしれないので）。</p>
+  <p>たとえば、「ダンロンRP葉隠シックスセンス」村はタグ付けされますが「ダンロンRPセレスSS」村はタグ付けされません。「澪田唯吹SS」村はそもそも取得されません。</p>
+  <ul>
+   <li>「グレラン」を含む → 「アイランド」が含まれていれば"グレランアイランド"、なければ"グレラン"</li>
+   <li>「アイランド」を含む → "アイランド"</li>
+   <li>「NGワード」を含む → "NGワード"</li>
+   <li>「オシオキ」を含む → "オシオキ"</li>
+   <li>「オークション」を含む → "オークション"</li>
+   <li>「ジョイ」を含む → "ジョイ君方式"</li>
+   <li>「ワンナイト」を含む → "ワンナイト"</li>
+   <li>「シックスセンス」を含む → "シックスセンス"</li>
+   <li>「相思相愛」を含む → 「グレ」が含まれていれば"グレ恋相思相愛"、なければ"相思相愛"</li>
+   <li>「グレ恋」を含む → グレ恋</li>
+   <li>「ダイス」を含む → ダイス</li>
+  </ul>
+	
+	<h3 class="doc">App info</h3>
+	
+  <h4 class="doc"><strong>Ruru-Logger</strong> <small>for Danganronpa</small></h4>
+	<p>created by <strong>DrWhopper</strong>
+    (mailto: <img src='@routes.Assets.at("images/mail.png")'> /
+     twitter: <a href="https://twitter.com/6enk" target="_blank">@@6enk</a>)
+  <br>
+  with technology:
+    <strong><a href="http://www.playframework.com/" target="_blank">Play Framework</a></strong>
+    with <strong><a href="http://www.scala-lang.org/" target="_blank">Scala</a></strong>,
+		<strong><a href="http://about.validator.nu/htmlparser/" target="_blank">Validator.nu HTML Parser</a></strong>,
+    <strong><a href="http://www.postgresql.org/" target="_blank">PostgreSQL</a></strong>,
+    <strong><a href="http://getbootstrap.com/" target="_blank">Bootstrap</a></strong>,
+    <strong><a href="https://www.heroku.com/" target="_blank">Heroku</a></strong>.
+    <br>
+    Source code is available on the <a href="https://github.com/drwhopper/danronlogger/" target="_blank">GitHub</a>.
+  </p>
+  <p>Special thanks to:<br>
+     <strong><a href="http://werewolf.ddo.jp/" target="_blank">「汝は人狼なりや？」るる鯖</a></strong> created by <strong>るる</strong>,<br>
+      <strong><a href="http://ronpawwf.whoa.jp/" target="_blank">ダンガンロンパ人狼Wiki</a></strong> created by <strong>usmm</strong>.
+  </p>
+}
+

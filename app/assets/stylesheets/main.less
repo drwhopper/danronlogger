@@ -1,0 +1,66 @@
+@import "lib/bootstrap/less/bootstrap.less";
+
+@font-family-sans-serif: "Helvetica Neue", Helvetica, Arial, "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+
+@body-bg:               #e5e5e5;
+
+@font-face {
+  font-family: 'Glyphicons Halflings';
+  src: url('../lib/bootstrap/fonts/glyphicons-halflings-regular.eot');
+  src: url('../lib/bootstrap/fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('../lib/bootstrap/fonts/glyphicons-halflings-regular.woff') format('woff'), url('../lib/bootstrap/fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('../lib/bootstrap/fonts/glyphicons-halflings-regular.svg#glyphicons-halflingsregular') format('svg');
+}
+
+@gray-darker:            lighten(#000, 13.5%); // #222
+@gray-dark:              lighten(#000, 20%);   // #333
+@gray:                   lighten(#000, 33.5%); // #555
+@gray-light:             lighten(#000, 46.7%); // #777
+@gray-lighter:           lighten(#000, 93.5%); // #eee
+
+@brand-primary:         #bd0c69;
+@brand-success:         #5cb85c;
+@brand-info:            #5bc0de;
+@brand-warning:         #f0ad4e;
+@brand-danger:          #d9534f;
+
+@nav-tabs-border-color: #e39;
+@nav-tabs-active-link-hover-border-color: #e39;
+
+.label-beginner {
+  .label-variant(#2fb54a);
+}
+
+.label-sp {
+  .label-variant(#c2355b);
+}
+
+.label-deserted {
+  .label-variant(@gray-dark);
+}
+
+.btn-select {
+  color: #ffffff;
+  background-color: lighten(#000, 77%);
+  border-color: lighten(#000, 66%);
+}
+.btn-select:hover,
+.btn-select:focus,
+.btn-select:active,
+.btn-select.active,
+.open > .dropdown-toggle.btn-info {
+  color: #ffffff;
+  background-color: lighten(@brand-primary, 10%);
+  border-color: @brand-primary;
+}
+.btn-select:active,
+.btn-select.active,
+.open > .dropdown-toggle.btn-select {
+  background-image: none;
+}
+
+h3.doc {
+  border-bottom: 0.1em solid @brand-primary;
+}
+h4.doc {
+  padding-left: 0.2em;
+  border-left: 0.2em solid @brand-primary;
+}
