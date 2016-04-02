@@ -4,7 +4,7 @@ import scala.io.Source
 
 object RuruUtil {
 
-  def ruruUrl = "http://werewolf.ddo.jp/"
+  def ruruUrl = "http://ruru-jinro.net/"
 
   def toSource(villageID: Int) = {
     Source.fromURL(toURL(villageID))("UTF-8")

@@ -27,7 +27,7 @@ object RuruReader {
   }
 
   def getInfo {
-    val source = Source.fromURL("http://werewolf.ddo.jp/resource/vinfo/en.json")("UTF-8").mkString
+    val source = Source.fromURL("http://ruru-jinro.net/resource/vinfo/en.json")("UTF-8").mkString
     val json = Json.parse(source).as[List[JsValue]]
     RunningVillage.check(json.collect {
       case s if s.isDanronVillage => {
